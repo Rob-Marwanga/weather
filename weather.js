@@ -13,7 +13,7 @@
 // NOTES AND HINTS
 
 // All of the work of grabbing data from the Dark Sky API is already done
-// for you! Your task is to take that data, transform it into HTML, and 
+// for you! Your task is to take that data, transform it into HTML, and
 // insert it into the document. All of your work begins on line 47!
 
 // Each day of the forecast should use HTML markup similar to:
@@ -37,14 +37,38 @@
 // .append() appends a string (containing HTML) to a jQuery DOM object
 
 let handleWeatherResponse = function(response) {
-  // leave these two lines alone; they allow for the inspection of 
+  // leave these two lines alone; they allow for the inspection of
   // the response object in the browser console (try typing "response"
   // in the Chrome JavaScript console!)
   console.log(response)
   window.response = response
 
   // **** your code starts here - don't modify anything else. you will be sad.
+  $(".current").empty();
+  let currently = window.response.currently;
+  let html = '<div class="card-center>';
+  html = html + '<div class="card">';
+  html = html + '<div class="card-body">';
+  html = html + '<h3 class="card-title">' + 'Current Weather' + '</h3>';
+  html = html + '<h3 class="card-title">' + icon(currently.icon) + '</h3>';
+  html = html + '<h4 class="card-title">' + Math.round(currently.temperature) + '</h4>';
+  html = html + '<p class="card-text">' + currently.summary + '</p>';
+  html = html + '</div></div></div>';
+  $(".current").append(html);
+  $(".current").fadeIn();
 
+  $(".forecast").empty();
+  for (let i=0; i<window.response.daily.data.length; i++) {
+    let forecasts = window.response.daily.data[i];
+    let html = '<div class="col">';
+    html = html + '<h4 class="card-title">' + [i] + ' Days from Now' + '</h4>';
+    html = html + '<h4 class="card-title">' + icon(forecasts.icon) + '</h4>';
+    html = html + '<h5 class"col">' + Math.round(forecasts.temperatureLow) + '|'+ Math.round(forecasts.temperatureHigh) + '</h5>';
+    html = html + '<p class="col">' + forecasts.summary + '</p>';
+    html = html + '</div></div></div>';
+    $(".forecast").append(html);
+  };
+    $(".forecast").fadeIn();
   // *** your code ends here -- really.
 };
 
